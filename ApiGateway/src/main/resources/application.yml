@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: API-GATEWAY
+  cloud:
+    gateway:
+      routes:
+      - id: LIBRARY
+        uri: lb://LIBRARY/
+        predicates:
+        - Path=/api/v1/library/**
+server:
+  port: 8095
+eureka:
+  instance:
+    prefer-ip-address: true
+
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    
