@@ -4,10 +4,29 @@ spring:
   cloud:
     gateway:
       routes:
+      - id: AUTH
+        uri: lb://AUTH-SERVICE/
+        predicates:
+        - Path=/api/v1/users/**
+        filters:
+        - AuthFilter
+
       - id: LIBRARY
         uri: lb://LIBRARY/
         predicates:
         - Path=/api/v1/library/**
+        filters:
+        - AuthFilter
+      default-filters:
+         - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+         
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+    
 server:
   port: 8095
 eureka:
@@ -18,3 +37,4 @@ eureka:
     fetch-registry: true
     register-with-eureka: true
     
+  
